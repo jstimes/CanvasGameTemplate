@@ -6,6 +6,7 @@ import { GameObject } from 'src/app/game_object';
 import { CONTROLS } from 'src/app/controls';
 import { GameManager } from 'src/app/game_manager';
 import { StartMenu } from 'src/app/start_menu';
+import { GameStateManager } from 'src/app/game_state_manager';
 
 
 const BACKGROUND_COLOR = '#959aa3';
@@ -29,8 +30,7 @@ export class AppComponent {
   lastRenderTime = 0;
 
   gameState: GameState = GameState.START_MENU;
-  gameManager?: GameManager;
-  startMenu?: StartMenu;
+  gameStateManager?: GameStateManager
 
   ngOnInit() {
     this.canvas = document.getElementById('canvas') as HTMLCanvasElement;
@@ -49,23 +49,8 @@ export class AppComponent {
     const elapsedMs = timestamp - this.lastRenderTime;
     if (elapsedMs > RENDER_SETTINGS.msBetweenRenders) {
       this.lastRenderTime = timestamp;
-      switch (this.gameState) {
-        case GameState.START_MENU:
-          this.startMenu.update(elapsedMs);
-          // TODO - find a better way to transition states...
-          if (this.startMenu != null) {
-            this.startMenu.render();
-          }
-          break;
-        case GameState.GAME:
-          this.gameManager.update(elapsedMs);
-          if (this.gameManager != null) {
-            this.gameManager.render();
-          }
-          break;
-        default:
-          throw new Error('Unknown GameState');
-      }
+      this.gameStateManager.update(elapsedMs);
+      this.gameStateManager.render();
     }
     window.requestAnimationFrame((timestamp: number) => {
       this.gameLoop(timestamp);
@@ -74,25 +59,30 @@ export class AppComponent {
 
   private initStartMenu(): void {
     this.gameState = GameState.START_MENU;
-    this.startMenu = new StartMenu(
+    this.gameStateManager = new StartMenu(
       this.canvas,
       this.context,
-      () => {
-        this.startMenu.destroy();
-        this.startMenu = null;
-        this.initGame();
+      {
+        onPlayGame: () => {
+          this.tearDownCurrentGameState();
+          this.initGame();
+        },
       });
   }
 
   private initGame(): void {
     this.gameState = GameState.GAME;
-    this.gameManager = new GameManager(
+    this.gameStateManager = new GameManager(
       this.canvas,
       this.context,
       () => {
-        this.gameManager.destroy();
-        this.gameManager = null;
+        this.tearDownCurrentGameState();
         this.initStartMenu();
       });
+  }
+
+  private tearDownCurrentGameState(): void {
+    this.gameStateManager.destroy();
+    this.gameStateManager = null;
   }
 }

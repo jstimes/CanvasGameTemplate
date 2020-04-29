@@ -3,10 +3,14 @@ import { Button } from 'src/app/ui/button';
 import { Point } from 'src/app/math/point';
 import { RENDER_SETTINGS } from 'src/app/render_settings';
 import { CONTROLS } from 'src/app/controls';
+import { GameStateManager } from 'src/app/game_state_manager';
 
-type OnLevelSelected = (levelIndex: number) => void;
+interface ButtonMetadata {
+    text: string;
+    callback: () => void;
+}
 
-export class StartMenu {
+export class StartMenu implements GameStateManager {
     private readonly BACKGROUND_COLOR = '#959aa3';
     private readonly TEXT_COLOR = '#1560e8';
     private readonly canvas: HTMLCanvasElement;
@@ -17,11 +21,11 @@ export class StartMenu {
     constructor(
         canvas: HTMLCanvasElement,
         context: CanvasRenderingContext2D,
-        onPlayGame: () => void) {
+        callbacks: { onPlayGame: () => void; }) {
 
         this.canvas = canvas;
         this.context = context;
-        this.onPlayGame = onPlayGame;
+        this.onPlayGame = callbacks.onPlayGame;
 
         this.uiManager = new UiManager(context);
         this.initLevelMenu();
@@ -50,22 +54,26 @@ export class StartMenu {
     private initLevelMenu(): void {
         const leftMargin = .4;
         const topMargin = .3;
+        const buttonOffsetY = .08;
         const buttonSize = new Point(.2, .1);
         const buttonColor = '#f7c25e';
         const buttonHoverColor = '#fcd281';
         const fontSize = 24;
-        const buttonTexts = ['Play'];
-        for (let buttonIndex = 0; buttonIndex < buttonTexts.length; buttonIndex++) {
-            const topLeftY = (buttonIndex + 1) * topMargin + buttonIndex * buttonSize.y;
+        const buttonMetadatas: ButtonMetadata[] = [
+            { text: 'Play', callback: this.onPlayGame },
+        ];
+        for (let buttonIndex = 0; buttonIndex < buttonMetadatas.length; buttonIndex++) {
+            const topLeftY = topMargin + buttonIndex * buttonOffsetY + buttonIndex * buttonSize.y;
+            const buttonMetadata = buttonMetadatas[buttonIndex];
             const button = new Button({
                 topLeft: new Point(leftMargin, topLeftY),
                 size: buttonSize,
-                text: buttonTexts[buttonIndex],
+                text: buttonMetadata.text,
                 fontSize,
                 color: buttonColor,
                 hoverColor: buttonHoverColor,
                 textColor: this.TEXT_COLOR,
-                onClickCallback: this.onPlayGame,
+                onClickCallback: buttonMetadata.callback,
             });
             this.uiManager.addElement(button);
         }
