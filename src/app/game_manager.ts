@@ -12,11 +12,12 @@ const HOVERED_TILE_COLOR = '#f7c25e';
 
 export class GameManager implements GameStateManager {
 
-    canvas: HTMLCanvasElement;
-    context: CanvasRenderingContext2D;
-    onExitGameCallback: () => void;
-    gameObjects: GameObject[];
-    controlMap: ControlMap;
+    private readonly canvas: HTMLCanvasElement;
+    private readonly context: CanvasRenderingContext2D;
+    private readonly onExitGameCallback: () => void;
+
+    private gameObjects: GameObject[];
+    private controlMap: ControlMap;
 
     constructor(
         canvas: HTMLCanvasElement,

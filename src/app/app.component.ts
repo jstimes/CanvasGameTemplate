@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
 import { RENDER_SETTINGS } from 'src/app/render_settings';
-import { Grid } from 'src/app/grid';
-import { Point } from 'src/app/math/point';
-import { GameObject } from 'src/app/game_object';
 import { CONTROLS } from 'src/app/controls';
 import { GameManager } from 'src/app/game_manager';
 import { StartMenu } from 'src/app/start_menu';
@@ -25,12 +22,12 @@ enum GameState {
 })
 export class AppComponent {
 
-  canvas: HTMLCanvasElement;
-  context: CanvasRenderingContext2D;
-  lastRenderTime = 0;
+  private canvas: HTMLCanvasElement;
+  private context: CanvasRenderingContext2D;
+  private lastRenderTime = 0;
 
-  gameState: GameState = GameState.START_MENU;
-  gameStateManager?: GameStateManager
+  private gameState: GameState = GameState.START_MENU;
+  private gameStateManager?: GameStateManager
 
   ngOnInit() {
     this.canvas = document.getElementById('canvas') as HTMLCanvasElement;
