@@ -2,7 +2,7 @@ import { RENDER_SETTINGS } from 'src/app/render_settings';
 import { CONTROLS } from 'src/app/controls';
 import { GameManager } from 'src/app/game_manager';
 import { StartMenu } from 'src/app/start_menu';
-import { GameStateManager } from 'src/app/game_state_manager';
+import { GameModeManager } from 'src/app/game_mode_manager';
 import * as styles from 'src/assets/css/styles.css';
 
 
@@ -22,7 +22,7 @@ export class Main {
   private lastRenderTime = 0;
 
   private gameState: GameState = GameState.START_MENU;
-  private gameStateManager?: GameStateManager
+  private gameStateManager?: GameModeManager
 
   constructor() {
     this.canvas = document.createElement('canvas');

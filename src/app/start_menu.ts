@@ -3,14 +3,14 @@ import { Button } from 'src/app/ui/button';
 import { Point } from 'src/app/math/point';
 import { RENDER_SETTINGS } from 'src/app/render_settings';
 import { CONTROLS } from 'src/app/controls';
-import { GameStateManager } from 'src/app/game_state_manager';
+import { GameModeManager } from 'src/app/game_mode_manager';
 
 interface ButtonMetadata {
     text: string;
     callback: () => void;
 }
 
-export class StartMenu implements GameStateManager {
+export class StartMenu implements GameModeManager {
     private readonly BACKGROUND_COLOR = '#959aa3';
     private readonly TEXT_COLOR = '#1560e8';
     private readonly canvas: HTMLCanvasElement;

@@ -3,7 +3,7 @@ import { Grid } from 'src/app/grid';
 import { Point } from 'src/app/math/point';
 import { GameObject } from 'src/app/game_object';
 import { CONTROLS, ControlMap, EventType, Key } from 'src/app/controls';
-import { GameStateManager } from 'src/app/game_state_manager';
+import { GameModeManager } from 'src/app/game_mode_manager';
 import { ParticleSystem, ParticleShape } from './particle_system';
 
 
@@ -11,7 +11,7 @@ const BACKGROUND_COLOR = '#959aa3';
 const GRID_COLOR = '#1560e8';
 const HOVERED_TILE_COLOR = '#f7c25e';
 
-export class GameManager implements GameStateManager {
+export class GameManager implements GameModeManager {
 
     private readonly canvas: HTMLCanvasElement;
     private readonly context: CanvasRenderingContext2D;
