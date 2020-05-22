@@ -99,6 +99,7 @@ export class GameManager implements GameModeManager {
         for (const particleSystem of this.particleSystems) {
             particleSystem.render(context);
         }
+        this.renderControlOverlay();
     }
 
     destroy(): void {
@@ -150,5 +151,20 @@ export class GameManager implements GameModeManager {
             maxRadius: .12 * Grid.TILE_SIZE,
         });
         this.particleSystems.push(particleSystem);
+    }
+
+    private renderControlOverlay(): void {
+        const context = this.context;
+        let topLeft = new Point(24, 24);
+        const fontSize = 12;
+        context.font = `${fontSize}px fantasy`;
+        context.strokeStyle = '#FFFF00';
+        for (const controlKey of this.controlMap.assignedControls.keys()) {
+            const keyString = CONTROLS.getStringForKey(controlKey);
+            const action = CONTROLS.getAssignedControlMap().get(controlKey);
+            const text = `${keyString} - ${action}`;
+            context.strokeText(text, topLeft.x, topLeft.y);
+            topLeft = new Point(topLeft.x, topLeft.y + fontSize * 2);
+        }
     }
 }
