@@ -1,23 +1,17 @@
 # CanvasGameTemplate
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.0.
+A game template to be used as a starting point for 2D grid/tile based games.
+Check it out now at https://jstimes.github.io/CanvasGameTempalte/dist/index.html
 
-## Development server
+## Setup
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `npm install`.
 
-## Code scaffolding
+## Development
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Run `npm run start` to start a local server which serves the project and 
+auto-reloads for new changes.
 
-## Build
+## Deployment
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Run `npm run build` - outputs are placed in the dist/ folder
