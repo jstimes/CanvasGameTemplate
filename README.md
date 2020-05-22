@@ -1,6 +1,6 @@
 # CanvasGameTemplate
 
-A game template to be used as a starting point for 2D grid/tile based games.
+A starting point for 2D HTML canvas games in TypeScript.
 Check it out now at https://jstimes.github.io/CanvasGameTempalte/dist/index.html
 
 ## Setup
