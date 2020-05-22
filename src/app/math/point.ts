@@ -1,7 +1,7 @@
 export class Point {
 
-    x: number;
-    y: number;
+    readonly x: number;
+    readonly y: number;
 
     constructor(x: number, y: number) {
         this.x = x;
@@ -52,6 +52,19 @@ export class Point {
     toString(): string {
         return `(${this.x}, ${this.y})`;
     }
+
+    getNormalVectorClockwise(): Point {
+        return new Point(this.y, -this.x);
+    }
+
+    getNormalVectorCounterclockwise(): Point {
+        return new Point(-this.y, this.x);
+    }
+
+    /** Assumes this point is incoming vector. */
+    reflect(normal: Point): Point {
+        return this.subtract(normal.multiplyScaler(2 * this.dot(normal)));
+    }
 }
 
 export function containsPoint(x: Point, points: Point[]): boolean {
@@ -61,4 +74,8 @@ export function containsPoint(x: Point, points: Point[]): boolean {
         }
     }
     return false;
+}
+
+export function pointFromSerialized(pt: { x: number; y: number }): Point {
+    return new Point(pt.x, pt.y);
 }
