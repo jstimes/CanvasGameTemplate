@@ -15,7 +15,7 @@ import { RENDER_SETTINGS } from 'src/app/render_settings';
 export class UiManager {
 
     private readonly context: CanvasRenderingContext2D;
-    private readonly elements: Element[];
+    private elements: Element[];
 
     constructor(context: CanvasRenderingContext2D) {
         this.context = context;
@@ -26,6 +26,14 @@ export class UiManager {
         this.elements.push(element);
     }
 
+    removeAll(): void {
+        this.elements = [];
+    }
+
+    removeElement(element: Element): void {
+        this.elements.splice(this.elements.indexOf(element), 1);
+    }
+
     onMouseMove(canvasCoords: Point): void {
         const uiCoords = this.getUiCoords(canvasCoords);
         for (const element of this.elements) {
@@ -33,11 +41,14 @@ export class UiManager {
         }
     }
 
-    onClick(canvasCoords: Point): void {
+    onClick(canvasCoords: Point): boolean {
         const uiCoords = this.getUiCoords(canvasCoords);
         for (const element of this.elements) {
-            element.onClick(uiCoords);
+            if (element.onClick(uiCoords)) {
+                return true;
+            }
         }
+        return false;
     }
 
     render(): void {

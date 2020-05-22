@@ -72,14 +72,18 @@ export class StartMenu implements GameStateManager {
                 + index * buttonSize.y;
             const buttonMetadata = buttonMetadatas[index];
             const button = new Button({
-                topLeft: new Point(leftMargin, topLeftY),
-                size: buttonSize,
-                text: buttonMetadata.text,
-                fontSize,
-                color: buttonColor,
-                hoverColor: buttonHoverColor,
-                textColor: this.TEXT_COLOR,
-                onClickCallback: buttonMetadata.callback,
+                dimensions: {
+                    topLeft: new Point(leftMargin, topLeftY),
+                    size: buttonSize,
+                    text: buttonMetadata.text,
+                },
+                style: {
+                    fontSize,
+                    color: buttonColor,
+                    hoverColor: buttonHoverColor,
+                    textColor: this.TEXT_COLOR,
+                },
+                onClick: buttonMetadata.callback,
             });
             this.uiManager.addElement(button);
         }
