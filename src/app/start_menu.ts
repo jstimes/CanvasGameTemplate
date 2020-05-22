@@ -41,8 +41,12 @@ export class StartMenu implements GameStateManager {
 
     render(): void {
         this.context.fillStyle = this.BACKGROUND_COLOR;
-        this.context.clearRect(0, 0, RENDER_SETTINGS.canvasWidth, RENDER_SETTINGS.canvasHeight);
-        this.context.fillRect(0, 0, RENDER_SETTINGS.canvasWidth, RENDER_SETTINGS.canvasHeight);
+        this.context.clearRect(
+            0, 0,
+            RENDER_SETTINGS.canvasWidth, RENDER_SETTINGS.canvasHeight);
+        this.context.fillRect(
+            0, 0,
+            RENDER_SETTINGS.canvasWidth, RENDER_SETTINGS.canvasHeight);
         this.renderTitleText();
         this.uiManager.render();
     }
@@ -62,9 +66,11 @@ export class StartMenu implements GameStateManager {
         const buttonMetadatas: ButtonMetadata[] = [
             { text: 'Play', callback: this.onPlayGame },
         ];
-        for (let buttonIndex = 0; buttonIndex < buttonMetadatas.length; buttonIndex++) {
-            const topLeftY = topMargin + buttonIndex * buttonOffsetY + buttonIndex * buttonSize.y;
-            const buttonMetadata = buttonMetadatas[buttonIndex];
+        for (let index = 0; index < buttonMetadatas.length; index++) {
+            const topLeftY =
+                topMargin + index * buttonOffsetY
+                + index * buttonSize.y;
+            const buttonMetadata = buttonMetadatas[index];
             const button = new Button({
                 topLeft: new Point(leftMargin, topLeftY),
                 size: buttonSize,

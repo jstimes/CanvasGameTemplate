@@ -19,7 +19,9 @@ export class ControlMap {
 
     keyToKeyPressState: Map<Key, KeyPressState> = new Map();
 
-    add(params: { key: Key, name: string, func: () => void, eventType: EventType }) {
+    add(params: {
+        key: Key, name: string; func: () => void; eventType: EventType;
+    }) {
         this.assignedControls.set(params.key, params.func);
         CONTROLS.addAssignedControl(params.key, params.name);
         this.keyToEventType.set(params.key, params.eventType);
@@ -63,10 +65,12 @@ export class ControlMap {
                     switch (currentState) {
                         case KeyPressState.DOWN:
                             this.assignedControls.get(key)();
-                            this.keyToKeyPressState.set(key, KeyPressState.READY);
+                            this.keyToKeyPressState.set(
+                                key, KeyPressState.READY);
                             break;
                         case KeyPressState.NOT_STARTED:
-                            this.keyToKeyPressState.set(key, KeyPressState.READY);
+                            this.keyToKeyPressState.set(
+                                key, KeyPressState.READY);
                             break;
                         default:
                             break;
@@ -129,7 +133,9 @@ class Controls {
 
     handleClick(): Point {
         if (!this.hasClick()) {
-            throw new Error(`Must check hasClick before handleClick, or click already handled.`);
+            throw new Error(
+                `Must check hasClick before handleClick, ` +
+                `or click already handled.`);
         }
         this.hasClickInternal = false;
         return this.mouseCanvasCoords;

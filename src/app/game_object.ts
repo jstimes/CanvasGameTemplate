@@ -16,6 +16,8 @@ export class GameObject {
     render(context: CanvasRenderingContext2D): void {
         const tileCanvasTopLeft = Grid.getCanvasFromTileCoords(this.tileCoords);
         context.fillStyle = this.color;
-        context.fillRect(tileCanvasTopLeft.x, tileCanvasTopLeft.y, Grid.TILE_SIZE, Grid.TILE_SIZE);
+        context.fillRect(
+            tileCanvasTopLeft.x, tileCanvasTopLeft.y,
+            Grid.TILE_SIZE, Grid.TILE_SIZE);
     }
 }

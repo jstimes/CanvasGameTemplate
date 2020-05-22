@@ -46,8 +46,12 @@ export class GameManager implements GameStateManager {
     render(): void {
         const context = this.context;
         context.fillStyle = BACKGROUND_COLOR;
-        context.clearRect(0, 0, RENDER_SETTINGS.canvasWidth, RENDER_SETTINGS.canvasHeight);
-        context.fillRect(0, 0, RENDER_SETTINGS.canvasWidth, RENDER_SETTINGS.canvasHeight);
+        context.clearRect(
+            0, 0,
+            RENDER_SETTINGS.canvasWidth, RENDER_SETTINGS.canvasHeight);
+        context.fillRect(
+            0, 0,
+            RENDER_SETTINGS.canvasWidth, RENDER_SETTINGS.canvasHeight);
 
         // Draw grid lines.
         for (let i = 0; i < Grid.TILES_WIDE; i++) {
