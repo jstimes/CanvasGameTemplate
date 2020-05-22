@@ -13,15 +13,20 @@ enum KeyPressState {
     DOWN,
 }
 
+export interface ControlParams {
+    readonly key: Key;
+    readonly func: () => void;
+    readonly name: string;
+    readonly eventType: EventType;
+}
+
 export class ControlMap {
     assignedControls: Map<Key, () => void> = new Map();
     keyToEventType: Map<Key, EventType> = new Map();
 
     keyToKeyPressState: Map<Key, KeyPressState> = new Map();
 
-    add(params: {
-        key: Key, name: string; func: () => void; eventType: EventType;
-    }) {
+    add(params: ControlParams) {
         this.assignedControls.set(params.key, params.func);
         CONTROLS.addAssignedControl(params.key, params.name);
         this.keyToEventType.set(params.key, params.eventType);
@@ -54,7 +59,7 @@ export class ControlMap {
             const isKeyDown = CONTROLS.isKeyDown(key);
             if (eventType === EventType.KeyDown && isKeyDown
                 || eventType === EventType.KeyUp && !isKeyDown) {
-                this.assignedControls.get(key)();
+                this.assignedControls.get(key)!();
             } else if (eventType === EventType.KeyPress) {
                 const currentState = this.keyToKeyPressState.get(key);
                 if (isKeyDown) {
@@ -64,7 +69,7 @@ export class ControlMap {
                 } else {
                     switch (currentState) {
                         case KeyPressState.DOWN:
-                            this.assignedControls.get(key)();
+                            this.assignedControls.get(key)!();
                             this.keyToKeyPressState.set(
                                 key, KeyPressState.READY);
                             break;
@@ -94,6 +99,11 @@ class Controls {
     private hasClickInternal: boolean = false;
 
     constructor() {
+        const allKeys = Object.keys(Key)
+            .filter((key) => !isNaN(Number(Key[key])));
+        for (const key of allKeys) {
+            this.keyMap.set(Key[key], false);
+        }
         document.onkeydown = (e: KeyboardEvent) => {
             this.keyMap.set(e.keyCode, true);
         };
@@ -150,7 +160,13 @@ class Controls {
     }
 
     isKeyDown(key: Key): boolean {
-        return this.keyMap.get(key);
+        const isDown = this.keyMap.get(key);
+        if (isDown == null) {
+            throw new Error(
+                `Called isKeyDown for unmapped key: ` +
+                `${this.getStringForKey(key)}`);
+        }
+        return isDown;
     }
 
     addAssignedControl(key: Key, action: string): void {
@@ -158,6 +174,9 @@ class Controls {
             throw new Error(`Double-bound a control: ${key}`);
         }
         this.assignedControlMap.set(key, action);
+        if (!this.keyMap.has(key)) {
+            this.keyMap.set(key, false);
+        }
     }
 
     removeAssignedControl(key: Key): void {
@@ -173,6 +192,8 @@ class Controls {
 
     getStringForKey(key: Key): string {
         switch (key) {
+            case Key.SHIFT:
+                return 'Shift';
             case Key.A:
                 return 'A';
             case Key.B:
@@ -247,6 +268,14 @@ class Controls {
                 return '0';
             case Key.SPACE:
                 return 'Space';
+            case Key.LEFT_ARROW:
+                return 'Left arrow';
+            case Key.UP_ARROW:
+                return 'Up arrow';
+            case Key.RIGHT_ARROW:
+                return 'Right arrow';
+            case Key.DOWN_ARROW:
+                return 'Down arrow';
             default:
                 throw new Error("Need to add string for Key");
         }
@@ -257,6 +286,11 @@ export enum Key {
     ENTER = 13,
     SHIFT = 16,
     SPACE = 32,
+
+    LEFT_ARROW = 37,
+    UP_ARROW = 38,
+    RIGHT_ARROW = 39,
+    DOWN_ARROW = 40,
 
     ONE = 49,
     TWO = 50,
@@ -296,5 +330,29 @@ export enum Key {
     Y = 89,
     Z = 90,
 }
+
+export const numberToKey = new Map<number, Key>([
+    [1, Key.ONE],
+    [2, Key.TWO],
+    [3, Key.THREE],
+    [4, Key.FOUR],
+    [5, Key.FIVE],
+    [6, Key.SIX],
+    [7, Key.SEVEN],
+    [8, Key.EIGHT],
+    [9, Key.NINE],
+]);
+
+export const numberToOrdinal = new Map<number, string>([
+    [1, '1st'],
+    [2, '2nd'],
+    [3, '3rd'],
+    [4, '4th'],
+    [5, '5th'],
+    [6, '6th'],
+    [7, '7th'],
+    [8, '8th'],
+    [9, '9th'],
+]);
 
 export const CONTROLS = new Controls();
